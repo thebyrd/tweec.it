@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tweec.it</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+    <script type="text/javascript" src="/javascripts/ender.js"></script>
+    <script type="text/javascript" src="/javascripts/superagent.min.js"></script>
+  
+  <script>
+  //TODO: make last parameter a callback
+
+    /* Users */
+    function getUsers(){
+      request
+        .get('/users')
+        .end(function(res){
+          if(res.ok){
+            console.log(res.body);
+            //do something with res.body
+            return res.body;
+          } else {
+            //parse error in res.text
+            alert('request failed: ' + res.text);
+          }
+        });
+    }
+    function getUser(email){
+      request
+        .get('/users/'+email)
+        .end(function(res){
+          if(res.ok){
+            console.log(res.body);
+            return res.body;
+          } else {
+            alert('request failed: ' + res.text);
+          }
+        });
+    }
+    function createUser(name, email){
+      request
+        .post('/users/create')
+        .send({name: name, email: email})
+        .set('Accept', 'application/json')
+        .end(function(res){
+          if(res.ok){
+            //do something with res.body
+            console.log(res.body);
+            return res.body;
+          } else {
+            //parse error in res.text
+            alert('request failed: ' + res.text);
+          }
+        });
+    }
+    function updateUser(email, update){
+      request
+        .put('/users/'+email+'/update')
+        .send(update)
+        .set('Accept', 'application/json')
+        .end(function(res){
+          if(res.ok){
+            //do something with res.body
+            console.log(res.body);
+            return res.body;
+          } else { 
+            alert("request failed: " + res.text);
+          }
+        });
+    }
+    function deleteUser(email){
+      request
+        .del('/users/'+email+'/destroy')
+        .end(function(res){
+          if(res.ok){
+            //do something with res.body
+            console.log(res.body);
+            return res.body;
+          } else { 
+            alert("request failed: " + res.text);
+          }
+        });
+    }
+
+    /* Images */
+    function getImages(user_email) {
+      request
+        .get('/users/'+user_email+'/images')
+        .set('Accept', 'application/json')
+        .end(function(res){
+          if(res.ok){
+            //do something with res.body
+            console.log(res.body);
+            return res.body;
+          } else {
+            alert("request failed: " + res.text)
+          }
+        });
+    }
+    function getImage(user_email, img_id) {
+      request
+        .get('/users/'+user_email+'/images/'+img_id)
+        .set('Accept', 'application/json')
+        .end(function(res){
+          if(res.ok){
+            //do something with res.body
+            console.log(res.body);
+            return res.body;
+          } else {
+            alert("request failed: " + res.text)
+          }
+        });
+    }
+    function createImage(user_email, img_name, img_path){
+      request
+        .post('/users/'+user_email+'/images/create')
+        .send({name: img_name, path: img_path})
+        .set('Accept', 'application/json')
+        .end(function(res){
+          if(res.ok){
+            //do something with res.body
+            console.log(res.body);
+            return res.body;
+          } else {
+            //parse error in res.text
+            alert('request failed: ' + res.text);
+          }
+        });
+    }
+    function updateImage(user_email, img_id, update){
+      request
+        .put('/users/'+user_email+'/images/'+img_id+'/update')
+        .send(update)
+        .set('Accept', 'application/json')
+        .end(function(res){
+          if(res.ok){
+            //do something with res.body
+            console.log(res.body);
+            return res.body;
+          } else {
+            //parse error in res.text
+            alert('request failed:' + res.text);
+          }
+        });
+    }
+    function deleteImage(user_email, img_id){
+      request
+        .del('/users/'+user_email+'/images/'+img_id+'/destroy')
+        .end(function(res){
+          if(res.ok){
+            console.log(res.body);
+            return res.body;
+          } else {
+            alert('request failed: ' + res.text);
+          }
+        });
+    }
+    function getAdjustments(user_email, img_id){
+      request
+        .get('/users/'+user_email+'/images/'+img_id+'/adjustments')
+        .set('Accept', 'application/json')
+        .end(function(res){
+          if(res.ok){
+            console.log(res.body);
+            return res.body;
+          } else {
+            alert('request failed: ' + res.text);
+          }
+        });
+    }
+    function getAdjustment(user_email, img_id, adjust_id) {
+      request
+        .get('/users/'+user_email+'/images/'+img_id+'/adjustments/'+adjust_id)
+        .set('Accept', 'application/json')
+        .end(function(res){
+          if(res.ok){
+            console.log(res.body);
+            return res.body;
+          } else {
+            alert('request failed: ' + res.text);
+          }
+        });
+    }
+    function createAdjustment(user_email, img_id, slug){
+      request
+        .post('/users/'+user_email+'/images/'+img_id+'/adjustments/create')
+        .send({slug: slug})
+        .set('Accept', 'application/json')
+        .end(function(res){
+          if(res.ok){
+            //do something with res.body
+            console.log(res.body);
+            return res.body;
+          } else {
+            //parse error in res.text
+            alert('request failed: ' + res.text);
+          }
+        });
+    }
+    function updateAdjustment(user_email, img_id, adjust_id, update){
+      request
+        .put('/users/'+user_email+'/images/'+img_id+'/adjustments/'+adjust_id+'/update')
+        .send(update)
+        .set('Accept', 'application/json')
+        .end(function(res){
+          if(res.ok){
+            //do something with res.body
+            console.log(res.body);
+            return res.body;
+          } else {
+            //parse error in res.text
+            alert('request failed: ' + res.text);
+          }
+        });
+    }
+    function deleteAdjustment(user_email, img_id, adjust_id){
+      request
+        .del('/users/'+user_email+'/images'+img_id+'/adjustments/'+adjust_id+'/destory')
+        .end(function(res){
+          if(res.ok){
+            //do something with res.body
+            console.log(res.body);
+            return res.body;
+          } else {
+            //parse error in res.text
+            alert('request failed: ' + res.text);
+          }
+        });
+    }
+  </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <h2>Some Nav Goes here</h2>
+      </div>
+
+      <div class="row">
+        <div class="span2" id="side-menu">
+          <ul>
+            <li>facebook</li>
+            <li>smugmug</li>
+            <li>upload</li>
+          </ul>
+        </div>
+
+        <div class="span10">
+          <div class="well" id="images">
+            <div class="row">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>
