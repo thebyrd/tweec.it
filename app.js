@@ -5,7 +5,10 @@
 
 var express = require('express')
   , http = require('http')
-  , mongoose = require('mongoose');
+  , mongoose = require('mongoose')
+  , OAuth= require('oauth').OAuth
+  , request = require('superagent')
+    crypto = require('crypto');
 
 var app = express();
 
@@ -51,10 +54,11 @@ var ImageSchema = new Schema({
 var Image = mongoose.model('Image', ImageSchema);
 
 var UserSchema = new Schema({
-  name: { type: String, required: true, trim: true }
+  name: { type: String, trim: true }
 , email: { type: String, required: true, lowercase: true, trim: true, index: { unique: true, dropDups: true } }
 , created_at: { type:Date, default: Date.now }
 , images: [ImageSchema]
+, smugmug_access_token: { type: String, trim: true }
 })
 var User = mongoose.model('User', UserSchema);
 
@@ -110,13 +114,11 @@ app.post('/users/create', function(req, res){
   }); 
 });
 app.put('/users/:id/update', function(req, res){
-  console.log(req.body);
   User.update({ email: req.params.id }, req.body, {multi: false}, function(err, docs){
     res.json({sucess:!err});
   }); 
 });
 app.del('/users/:id/destroy', function(req, res){
-  console.log(req.body);
   User.findOne({email: req.params.id}, function(err, doc){
     if(err) throw err;
     doc.remove();
@@ -222,6 +224,150 @@ app.del('/users/:id/images/:img_id/adjustments/:adjust_id/destroy', function(req
     });
   });  
 });
+
+//helpers
+
+var callback_url = "http://0.0.0.0:3000/smugmug/auth/callback";
+var app_url = "http://0.0.0.0:3000/";
+//post request token
+//persist access token that I get back
+//fetch photos and display them on the page with the access token
+var request_token_url ="http://api.smugmug.com/services/oauth/getRequestToken.mg";
+var authorize_url = "http://api.smugmug.com/services/oauth/authorize.mg";
+var access_token_url ="http://api.smugmug.com/services/oauth/getAccessToken.mg";
+
+var access_point = "http://api.smugmug.com/services/api/json/1.3.0/";
+
+var smugmug_secret = "8837237e5a2e0ac93e8d1cbcc08e5a11";
+var smugmug_key = "MMY5EfpGEMs9ATYaP2r5KcLt33zrN4X6";
+var ts = String(Math.round(new Date().getTime() / 1000));
+var nonce = crypto.createHash('md5').update(ts).digest("hex");
+var signature_method = 'HMAC-SHA1';
+var signature = crypto.createHmac('sha1', smugmug_key).update(smugmug_secret).digest('hex');
+// request.get("http://api.smugmug.com/services/oauth/getRequestToken.mg").send({oauth_consumer_key: smugmug_key, oauth_timestamp: ts, oauth_nonce: nonce, oauth_signature_method: signature_method, oauth_signature: signature}).end(function(res){
+//           if(res.ok){
+//             //do something with res.body
+//             console.log(res.body);
+//           } else {
+//             //parse error in res.text
+//             console.log('request failed: ' + res.text);
+//           }
+//         });
+
+
+var oa = new OAuth(
+  "http://api.smugmug.com/services/oauth/getRequestToken.mg",
+  "http://api.smugmug.com/services/oauth/getAccessToken.mg",
+  smugmug_key,
+  smugmug_secret,
+  "1.0",
+  callback_url,
+  "HMAC-SHA1"
+);
+app.get('/:user_email/smugmug/auth', function(req, res){
+  User.find({email: req.params.user_email}, function(err, docs){
+    if(docs.length < 1) {
+      req.session.user_email = req.params.user_email;
+      var user = new User({email: req.params.user_email});
+      user.save(function(err){
+        if(err) throw err;
+      });
+    } else {
+      req.session.user_email = docs[0].email;
+    }
+  });
+  oa.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results){
+    if(error){
+      console.log(error);
+      res.send("yeah no. didn't work");
+    } else {
+      req.session.oauth = {};
+      req.session.oauth.token = oauth_token;
+      req.session.oauth.token_secret = oauth_token_secret;
+      res.redirect('http://api.smugmug.com/services/oauth/authorize.mg?oauth_token='+oauth_token);
+    }
+  });
+});
+app.get('/smugmug/auth/callback', function(req, res){
+  if(req.session.oauth){
+    req.session.oauth.verifier = req.query.oauth_verifier;
+    var oauth = req.session.oauth;
+
+    oa.getOAuthAccessToken(oauth.token, oauth.token_secret, oauth.verifier, function(error, oauth_access_token, oauth_access_token_secret, results){
+      if(error){
+        console.log(error);
+        res.send('yeah something broke');
+      } else {
+        req.session.oauth.access_token = oauth_access_token;
+        req.session.oauth.access_token_secret = oauth_access_token_secret;
+        oa.post(
+          "http://api.smugmug.com/services/api/json/1.3.0/",
+          oauth_access_token, oauth_access_token_secret,
+          {'method': 'smugmug.albums.get'},
+          function(err, data){
+            if(err) throw err;
+            data = JSON.parse(data);
+            if(data.stat == "ok"){
+              var albums = [];
+              for(var i = 0; i < data.Albums.length; i++){
+                albums.push({
+                  id: data.Albums[i].id, 
+                  key: data.Albums[i].Key, 
+                  title: data.Albums[i].Title
+                });
+              }
+              res.render('images', {albums: albums});
+              //render a template with the albums
+              //then have the template make a call async for the images in album
+            }
+            //res.send("worked. nice one. Good to meet you " + req.session.user_email+'\n'+data);
+          }
+        );     
+      }
+    });
+  }
+});
+app.get('/smugmug/images/:id/:key', function(req, res){
+  oa.post(
+    "http://api.smugmug.com/services/api/json/1.3.0/",
+    req.session.oauth.access_token, req.session.oauth.access_token_secret,
+    {
+      'method': 'smugmug.images.get',
+      'AlbumID': req.params.id,
+      'AlbumKey': req.params.key
+    },
+    function(err, data) {
+      if(err) throw err;
+      data = JSON.parse(data);
+      //request image urls
+      image_urls = [];
+      num_images = data.Album.Images.length;
+      for(var i = 0; i < num_images; i++) {
+        oa.post(
+          "http://api.smugmug.com/services/api/json/1.3.0/",
+          req.session.oauth.access_token, req.session.oauth.access_token_secret,
+          {
+            'method': 'smugmug.images.getURLs',
+            'ImageID': data.Album.Images[i].id,
+            'ImageKey': data.Album.Images[i].Key
+          },
+          function(err, data){
+            if(err) throw err;
+            data = JSON.parse(data);
+            console.log(data.Image.OriginalURL);
+            image_urls.push(data.Image.OriginalURL);
+            if(image_urls.length == num_images){
+              console.log(image_urls);
+              res.json(image_urls);
+            }
+          }
+        );  
+      }
+    }
+  );
+});
+
+
 
 
 http.createServer(app).listen(app.get('port'), function(){
