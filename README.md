@@ -6,8 +6,6 @@ you're beautiful. your images should be too.
 backend todo
 ============
 * process a credit card with stripe
-* get image directory names using imagemagik
-* upload images to S3
 * write a cron job that checks for images in "finished" directories, emails them to the correct user, & then marks them as sent in redis
 
 frontend todo
@@ -23,3 +21,7 @@ frontend todo
 * setup stripe form
 * thank you page
 * about us page
+
+wishlist
+=========
+* get image directory names using imagemagik

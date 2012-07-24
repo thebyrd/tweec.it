@@ -8,7 +8,13 @@ var express = require('express')
   , mongoose = require('mongoose')
   , OAuth= require('oauth').OAuth
   , request = require('superagent')
-    crypto = require('crypto');
+  , crypto = require('crypto')
+  , fs = require('fs')
+  , http = require('http')
+  , https = require('https')
+  , exec = require('child_process').exec
+  , spawn = require('child_process').spawn
+  , url = require('url');
 
 var app = express();
 
@@ -144,6 +150,7 @@ app.post('/users/:id/images/create', function(req, res){
     user.save(function(err){
       res.json({success:!err});
     });
+    download_image(req.body, req.params.id);
   }); 
 });
 app.put('/users/:id/images/:img_id/update', function(req, res){
@@ -225,43 +232,13 @@ app.del('/users/:id/images/:img_id/adjustments/:adjust_id/destroy', function(req
   });  
 });
 
-//helpers
-
-var callback_url = "http://0.0.0.0:3000/smugmug/auth/callback";
-var app_url = "http://0.0.0.0:3000/";
-//post request token
-//persist access token that I get back
-//fetch photos and display them on the page with the access token
-var request_token_url ="http://api.smugmug.com/services/oauth/getRequestToken.mg";
-var authorize_url = "http://api.smugmug.com/services/oauth/authorize.mg";
-var access_token_url ="http://api.smugmug.com/services/oauth/getAccessToken.mg";
-
-var access_point = "http://api.smugmug.com/services/api/json/1.3.0/";
-
-var smugmug_secret = "8837237e5a2e0ac93e8d1cbcc08e5a11";
-var smugmug_key = "MMY5EfpGEMs9ATYaP2r5KcLt33zrN4X6";
-var ts = String(Math.round(new Date().getTime() / 1000));
-var nonce = crypto.createHash('md5').update(ts).digest("hex");
-var signature_method = 'HMAC-SHA1';
-var signature = crypto.createHmac('sha1', smugmug_key).update(smugmug_secret).digest('hex');
-// request.get("http://api.smugmug.com/services/oauth/getRequestToken.mg").send({oauth_consumer_key: smugmug_key, oauth_timestamp: ts, oauth_nonce: nonce, oauth_signature_method: signature_method, oauth_signature: signature}).end(function(res){
-//           if(res.ok){
-//             //do something with res.body
-//             console.log(res.body);
-//           } else {
-//             //parse error in res.text
-//             console.log('request failed: ' + res.text);
-//           }
-//         });
-
-
 var oa = new OAuth(
   "http://api.smugmug.com/services/oauth/getRequestToken.mg",
   "http://api.smugmug.com/services/oauth/getAccessToken.mg",
-  smugmug_key,
-  smugmug_secret,
+  "MMY5EfpGEMs9ATYaP2r5KcLt33zrN4X6",//key
+  "8837237e5a2e0ac93e8d1cbcc08e5a11",//secret
   "1.0",
-  callback_url,
+  "http://0.0.0.0:3000/smugmug/auth/callback",
   "HMAC-SHA1"
 );
 app.get('/:user_email/smugmug/auth', function(req, res){
@@ -367,8 +344,61 @@ app.get('/smugmug/images/:id/:key', function(req, res){
   );
 });
 
+function download_image(file_url, email) {
+  var download_dir = 'public/images/downloads/' + email +'/';
+  var mkdir = 'mkdir -p ' + download_dir;
+  var child = exec(mkdir, function(error, stdout, sterr){
+    if(error) throw error;
+    else{download_file_httpget(file_url);}
+  });
+  var download_file_httpget = function(target_url){
+    var options = {
+      host: url.parse(target_url).host,
+      port: 80,
+      path: url.parse(target_url).pathname
+    };
+    var file_name = url.parse(target_url).pathname.split('/').pop();
 
+    var file = fs.createWriteStream(download_dir + file_name);
+    http.get(options, function(res) {
+      res.on('data', function(data) {
+        file.write(data);
+      }).on('end', function() {
+        file.end();
+        console.log(file_name + ' downloaded to ' + download_dir);
+      });
+    });
+  };
+}
 
+function delete_image(file_url, email) {
+  var directory = 'public/images/downloads/' + email + '/';
+  var rm = 'rm ' + directory + url.parse(file_url).pathname.split('/').pop();
+  var child = exec(rm, function(error, stdout, sterr){
+    if(error) throw error;
+  });
+}
+
+function upload_to_s3(file_name, email) {
+  var client = require('knox').createClient({ key: "AKIAIFDOREOAE3AQARAA", secret: "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", bucket: 'tweec'});
+  var stream = fs.createReadStream('public/images/downloads/'+email+'/'+file_name);
+  client.putStream(stream,'/'+email+'/todo/'+file_name, function(err, res){
+    if(err) throw err;
+    console.log(res);
+  });
+}
+
+function download_from_s3(file_name, email) {
+  var client = require('knox').createClient({ key: "AKIAIFDOREOAE3AQARAA", secret: "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", bucket: 'tweec'});
+  client.get('/'+email+'/todo/'+file_name).on('response', function(res){
+    console.log(res.statusCode);
+    console.log(res.headers);
+    res.setEncoding('utf8');
+    res.on('data', function(chunk){
+      console.log(chunk);
+    });
+  }).end();
+}
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

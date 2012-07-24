@@ -230,23 +230,106 @@
   </script>
   </head>
   <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li><a href=""><img src="/images/logo.png" alt="" /></a></li>
+              <li><a href="">Login</a></li>
+              <li><a href="">Select Tweecs</a></li>
+              <li><a href="">Submit Photos</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="container">
       <div class="row">
-        <h2>Some Nav Goes here</h2>
-      </div>
-
-      <div class="row">
-        <div class="span2" id="side-menu">
-          <ul>
-            <li>facebook</li>
-            <li>smugmug</li>
-            <li>upload</li>
+        <div class="span3" id="side-menu">
+          <ul class="nav nav-list well">
+            <li class="hav-header">Our Story</a></li>
+            <li><a href="">Photoretouch Online</a></li>
+            <li><a href="">Singularity University</a></li>
+            <li class="divider"></li>
+            <li class="hav-header">Our Team</a></li>
+            <li><a href="">TJ Rak &ndash; Biz Dev</a></li>
+            <li><a href="">David Byrd &ndash; Tech</a></li>
+            <li><a href="">Lena Shageiva &ndash; Design</a></li>
+            <li class="divider"></li>
+            <li class="hav-header">Our Technology</a></li>
+            <li><a href="">Whitelabel Retouching</a></li>
+            <li><a href="">Consumer API</a></li>
           </ul>
         </div>
 
-        <div class="span10">
+        <div class="span9">
           <div class="well" id="images">
             <div class="row">
+              <div class="span2">
+                <a href="" class="thumbnail">
+                  <img src="http://byrdhou.se/davidProfilePicture.jpg" />
+                </a>
+              </div>
+              <div class="span2">
+                <a href="" class="thumbnail">
+                  <img src="http://byrdhou.se/davidProfilePicture.jpg" />
+                </a>
+              </div>
+              <div class="span2">
+                <a href="" class="thumbnail">
+                  <img src="http://byrdhou.se/davidProfilePicture.jpg" />
+                </a>
+              </div>
+              <div class="span2">
+                <a href="" class="thumbnail">
+                  <img src="http://byrdhou.se/davidProfilePicture.jpg" />
+                </a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="span2">
+                <a href="" class="thumbnail">
+                  <img src="http://byrdhou.se/davidProfilePicture.jpg" />
+                </a>
+              </div>
+              <div class="span2">
+                <a href="" class="thumbnail">
+                  <img src="http://byrdhou.se/davidProfilePicture.jpg" />
+                </a>
+              </div>
+              <div class="span2">
+                <a href="" class="thumbnail">
+                  <img src="http://byrdhou.se/davidProfilePicture.jpg" />
+                </a>
+              </div>
+              <div class="span2">
+                <a href="" class="thumbnail">
+                  <img src="http://byrdhou.se/davidProfilePicture.jpg" />
+                </a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="span2">
+                <a href="" class="thumbnail">
+                  <img src="http://byrdhou.se/davidProfilePicture.jpg" />
+                </a>
+              </div>
+              <div class="span2">
+                <a href="" class="thumbnail">
+                  <img src="http://byrdhou.se/davidProfilePicture.jpg" />
+                </a>
+              </div>
+              <div class="span2">
+                <a href="" class="thumbnail">
+                  <img src="http://byrdhou.se/davidProfilePicture.jpg" />
+                </a>
+              </div>
+              <div class="span2">
+                <a href="" class="thumbnail">
+                  <img src="http://byrdhou.se/davidProfilePicture.jpg" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
