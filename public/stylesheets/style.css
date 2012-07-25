@@ -1,7 +1,32 @@
+@font-face {
+  font-family: belgrano;
+  font-style: normal;
+  src: url("/fonts/Belgrano-Regular.ttf");
+}
+@font-face {
+  font-family: gothamb;
+  font-style: normal;
+  src: url("/fonts/GothamBlack.TTF");
+}
+@font-face {
+  font-family: gothamb;
+  font-style: bold;
+  src: url("/fonts/GothamBold.TTF");
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+button {
+  font-family: gothamb !important;
+  font-style: bold !important;
+}
 body {
   background: url("/images/back.png");
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px;
+  font-family: belgrano !important;
 }
 a {
   color: #00b7ff;
@@ -13,7 +38,11 @@ a {
 #side-menu ul li {
   margin: 0px;
 }
+.navbar {
+  background-color: #fff;
+}
 .navbar .nav li {
+  position: relative;
   margin-right: 200px;
 }
 .navbar .nav li img {
@@ -26,8 +55,105 @@ a {
   margin-right: 0px;
 }
 .navbar .nav li a {
+  background-color: #fff;
   font-size: 18px;
+}
+.navbar .nav li a:hover {
+  color: #f00 !important;
 }
 .span2 a.thumbnail {
   margin-bottom: 10px;
+}
+.navbar-inner {
+  background-image: none !important;
+  background-color: #fff !important;
+}
+.span3#side-menu {
+  position: fixed;
+  left: 0px;
+}
+.well {
+  position: relative;
+  min-height: 600px !important;
+  overflow: auto;
+  border: 1px solid #f00 !important;
+}
+.well .login-box {
+  width: 300px;
+  height: 300px;
+  text-align: center;
+  margin: 190px auto auto auto;
+}
+.well .login-box p {
+  text-align: justify;
+}
+.well .images {
+  margin-top: 20px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.well .images .thumbnail {
+  margin-bottom: 20px;
+}
+.well .checkout-box {
+  max-width: 678px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.well .checkout-box .line-item {
+  overflow: hidden;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  border-bottom: 1px solid #999;
+}
+.well .checkout-box .line-item .tweecs-summary ul {
+  list-style: none;
+  margin: 0px !important;
+}
+.well .checkout-box .item-headers {
+  overflow: hidden;
+  border-bottom: 4px solid #000;
+}
+.well .checkout-box .checkbox-options {
+  border-top: 1px solid #999;
+  border-bottom: 1px solid #999;
+}
+.well .checkout-box .control-group {
+  margin-top: 20px;
+}
+.app-tip {
+  max-width: 200px;
+}
+.down-arrow {
+  width: 1px;
+  height: 260px;
+  margin: 10px auto;
+  background-color: #f00;
+}
+.down-arrow:first-child {
+  margin-top: 0px;
+}
+.more-info {
+  text-align: center;
+}
+.more-info ul {
+  list-style: none;
+  margin-left: 0px;
+  font-size: 18px;
+}
+.more-info ul li {
+  margin-bottom: 18px;
+}
+.more-info ul li a {
+  color: #333;
+}
+.more-info ul li a:hover {
+  color: #f00;
+}
+.right-arrow {
+  background-color: #f00;
+  height: 2px;
+  top: 20px;
+  position: absolute;
 }

@@ -70,26 +70,37 @@ var User = mongoose.model('User', UserSchema);
 
 //Controllers
 app.get('/populate-db', function(req, res){
-  var fail_on_error = function(err){if(err) throw err;}
+  // var fail_on_error = function(err){if(err) throw err;}
 
-  var david = new User();
-  david.name = "David Byrd";
-  david.email = "david@byrdhou.se"
-  david.images.push({
-    name: 'davidProfilePicture.jpg'
-  , path: 'http://byrdhou.se/'
-  , adjustments: {
-      english_name:'Teeth Whitening' 
-    , chinese_name:'美白牙齿'
-    , english_description:'we\'ll adjust the shade of the teeth in the picture to look naturally white.'
-    , price:'1.75'
-  }
+  // var david = new User();
+  // david.name = "David Byrd";
+  // david.email = "david@byrdhou.se"
+  // david.images.push({
+  //   name: 'davidProfilePicture.jpg'
+  // , path: 'http://byrdhou.se/'
+  // , adjustments: {
+  //     english_name:'Teeth Whitening' 
+  //   , chinese_name:'美白牙齿'
+  //   , english_description:'we\'ll adjust the shade of the teeth in the picture to look naturally white.'
+  //   , price:'1.75'
+  // }
+  // });
+  // david.save(fail_on_error);
+
+  User.findOne({email: 'david@byrdhou.se'}, function(err, doc){
+    if(err) throw err;
+    var user = doc;
+    for(var i = 0; i < user.images.length; i++){
+      generate_instructions(user.images[i], 'david@byrdhou.se');  
+    }
   });
-  david.save(fail_on_error);
-  res.json(david);
+  res.json({success:true});
 });
 app.get('/', function(req, res){
-  res.render('index');
+  res.render('login');
+});
+app.get('/login', function(req, res){
+  res.redirect('/');
 });
 app.get('/about', function(req, res){
   res.json({
@@ -99,137 +110,194 @@ app.get('/about', function(req, res){
   , story: 'We all met while working at Singularity University in 2011. We like making useful stuff for people that doesn\'t already exist, so we made Tweec.it'
   });  
 });
-app.get('/users', function(req, res){
-  User.find({}, function(err, docs){
-    if(err) throw err;
-    res.json(docs);
-  });
-});
+
+//todo: figure out how to secure this
+// app.get('/users', function(req, res){
+//   User.find({}, function(err, docs){
+//     if(err) throw err;
+//     res.json(docs);
+//   });
+// });
+
 app.get('/users/:id', function(req, res){
-  User.findOne({email: req.params.id}, function(err, doc){
-    if(err) throw err;
-    res.json(doc);
-  });  
+  if(req.session.user_email && req.params.id == req.session.user_email){
+    User.findOne({email: req.params.id}, function(err, doc){
+      if(err) throw err;
+      res.json(doc);
+    });  
+  } else {
+    res.render('login');
+  }
 });
-app.post('/users/create', function(req, res){
-  var user = new User();
-  user.name = req.body.name;
-  user.email = req.body.email;
-  user.save(function(err){
-    res.json({sucess:!err});
-  }); 
-});
+
+//todo figure out how to stop people from creating an unlimited amount of users
+// app.post('/users/create', function(req, res){
+//   var user = new User();
+//   user.name = req.body.name;
+//   user.email = req.body.email;
+//   user.save(function(err){
+//     res.json({sucess:!err});
+//   }); 
+// });
 app.put('/users/:id/update', function(req, res){
-  User.update({ email: req.params.id }, req.body, {multi: false}, function(err, docs){
-    res.json({sucess:!err});
-  }); 
+  if(req.session.user_email && req.params.id == req.session.user_email){
+    User.update({ email: req.params.id }, req.body, {multi: false}, function(err, docs){
+      res.json({sucess:!err});
+    }); 
+  } else {
+    res.render('login');
+  }
 });
 app.del('/users/:id/destroy', function(req, res){
-  User.findOne({email: req.params.id}, function(err, doc){
-    if(err) throw err;
-    doc.remove();
-    res.json({sucess:!err});
-  });  
+  if(req.session.user_email && req.params.id == req.session.user_email){
+    User.findOne({email: req.params.id}, function(err, doc){
+      if(err) throw err;
+      doc.remove();
+      res.json({sucess:!err});
+    });  
+  } else {
+    res.render('login');
+  }
 });
 app.get('/users/:id/images', function(req, res){
-  User.findOne({email: req.params.id}, function(err, user){
-    if(err) throw err;
-    res.json(user.images);
-  });
+  if(req.session.user_email && req.params.id == req.session.user_email){
+    User.findOne({email: req.params.id}, function(err, user){
+      if(err) throw err;
+      res.json(user.images);
+    });
+  } else {
+    res.render('login');
+  }
 });
 app.get('/users/:id/images/:img_id', function(req, res){
-  User.findOne({'email': req.params.id}, function(err, user){
-    if(err) throw err;
-    res.json(user.images.id(req.params.img_id));
-  });
+  if(req.session.user_email && req.params.id == req.session.user_email){
+    User.findOne({'email': req.params.id}, function(err, user){
+      if(err) throw err;
+      res.json(user.images.id(req.params.img_id));
+    });
+  } else {
+    res.render('login');
+  }
 });
 app.post('/users/:id/images/create', function(req, res){
-  User.findOne({'email': req.params.id}, function(err, user){
-    if(err) throw err;
-    user.images.push(req.body);
-    user.save(function(err){
-      res.json({success:!err});
-    });
-    download_image(req.body, req.params.id);
-  }); 
+  if(req.session.user_email && req.params.id == req.session.user_email){
+    User.findOne({'email': req.params.id}, function(err, user){
+      if(err) throw err;
+      user.images.push(req.body);
+      user.save(function(err){
+        res.json({success:!err});
+      });
+      download_image(req.body, req.params.id);
+    }); 
+  } else {
+    res.render('login');
+  }
 });
 app.put('/users/:id/images/:img_id/update', function(req, res){
-  User.findOne({'email': req.params.id}, function(err, user){
-    if(err) throw err;
-    for(attr in req.body) { user.images.id(req.params.img_id)[attr] = req.body[attr]; }
-    user.save(function(err){
+  if(req.session.user_email && req.params.id == req.session.user_email){
+    User.findOne({'email': req.params.id}, function(err, user){
       if(err) throw err;
-      res.json({success:!err});
-    });
-  }); 
+      for(attr in req.body) { user.images.id(req.params.img_id)[attr] = req.body[attr]; }
+      user.save(function(err){
+        if(err) throw err;
+        res.json({success:!err});
+      });
+    }); 
+  } else {
+    res.render('login');
+  }
 });
 app.del('/users/:id/images/:img_id/destroy', function(req, res){
-  User.findOne({'email': req.params.id}, function(err, user){
-    if(err) throw err;
-    user.images.id(req.params.img_id).remove();
-    user.save(function(err){
+  if(req.session.user_email && req.params.id == req.session.user_email){
+    User.findOne({'email': req.params.id}, function(err, user){
       if(err) throw err;
-      res.json({success:!err});
+      user.images.id(req.params.img_id).remove();
+      user.save(function(err){
+        if(err) throw err;
+        res.json({success:!err});
+      });
     });
-  }) 
+  } else {
+    res.render('login');
+  } 
 });
 app.get('/users/:id/images/:img_id/adjustments', function(req, res){
-  User.findOne({'email': req.params.id}, function(err, user){
-    if(err) throw err;
-    res.json(user.images.id(req.params.img_id).adjustments)
-  });
+  if(req.session.user_email && req.params.id == req.session.user_email){
+    User.findOne({'email': req.params.id}, function(err, user){
+      if(err) throw err;
+      res.json(user.images.id(req.params.img_id).adjustments)
+    });
+  } else {
+    res.render('login');
+  }
 });
 app.get('/users/:id/images/:img_id/adjustments/:adjust_id', function(req, res){
-  User.findOne({'email': req.params.id}, function(err, user){
-    if(err) throw err;
-    res.json(user.images.id(req.params.img_id).adjustments.id(req.params.adjust_id))
-  }); 
+  if(req.session.user_email && req.params.id == req.session.user_email){
+    User.findOne({'email': req.params.id}, function(err, user){
+      if(err) throw err;
+      res.json(user.images.id(req.params.img_id).adjustments.id(req.params.adjust_id))
+    }); 
+  } else {
+    res.render('login');
+  }
 });
 app.post('/users/:id/images/:img_id/adjustments/create', function(req, res){
-  var tweecs = {
-    'whiten-teeth': {
-        english_name:'Teeth Whitening' 
-      , chinese_name:'美白牙齿'
-      , english_description:'we\'ll adjust the shade of the teeth in the picture to look naturally white.'
-      , price:'2'
+  if(req.session.user_email && req.params.id == req.session.user_email){
+    var tweecs = {
+      'whiten-teeth': {
+          english_name:'Teeth Whitening' 
+        , chinese_name:'美白牙齿'
+        , english_description:'we\'ll adjust the shade of the teeth in the picture to look naturally white.'
+        , price:'2'
+      }
+    , 'remove-acne': {
+          english_name:'Remove Acne' 
+        , chinese_name:'去除粉刺'
+        , english_description:'we\'ll smooth your skin to look naturally clear of acne.'
+        , price:'2'
+      }
     }
-  , 'remove-acne': {
-        english_name:'Remove Acne' 
-      , chinese_name:'去除粉刺'
-      , english_description:'we\'ll smooth your skin to look naturally clear of acne.'
-      , price:'2'
-    }
-  }
-  var adjustment = tweecs[req.body.slug]
-  User.findOne({'email': req.params.id}, function(err, user){
-    if(err) err;
-    user.images.id(req.params.img_id).adjustments.push(tweecs[req.body.slug]);
-    user.save(function(err){
-      if(err) throw err;
-      res.json({sucess:!err});
+    var adjustment = tweecs[req.body.slug]
+    User.findOne({'email': req.params.id}, function(err, user){
+      if(err) err;
+      user.images.id(req.params.img_id).adjustments.push(tweecs[req.body.slug]);
+      user.save(function(err){
+        if(err) throw err;
+        res.json({sucess:!err});
+      });
     });
-  }); 
+  } else {
+    res.render('login');
+  } 
 });
 app.put('/users/:id/images/:img_id/adjustments/:adjust_id/update', function(req, res){
-  User.findOne({'email': req.params.id}, function(err, user){
-    if(err) throw err;
-    user.images.id(req.params.img_id).adjustments.id(req.params.adjust_id)
-    for(attr in req.body) { user.images.id(req.params.img_id).adjustments.id(req.params.adjust_id)[attr] = req.body[attr]; }
-    user.save(function(err){
+  if(req.session.user_email && req.params.id == req.session.user_email){
+    User.findOne({'email': req.params.id}, function(err, user){
       if(err) throw err;
-      res.json({success:!err});
-    });
-  }); 
+      user.images.id(req.params.img_id).adjustments.id(req.params.adjust_id)
+      for(attr in req.body) { user.images.id(req.params.img_id).adjustments.id(req.params.adjust_id)[attr] = req.body[attr]; }
+      user.save(function(err){
+        if(err) throw err;
+        res.json({success:!err});
+      });
+    }); 
+  } else {
+    res.render('login');
+  }
 });
 app.del('/users/:id/images/:img_id/adjustments/:adjust_id/destroy', function(req, res){
-  User.findOne({'email': req.params.id}, function(err, user){
-    if(err) throw err;
-    user.images.id(req.params.img_id).adjustments.id(req.params.adjust_id).remove();
-    user.save(function(err){
+  if(req.session.user_email && req.params.id == req.session.user_email){
+    User.findOne({'email': req.params.id}, function(err, user){
       if(err) throw err;
-      res.json({success:!err});
+      user.images.id(req.params.img_id).adjustments.id(req.params.adjust_id).remove();
+      user.save(function(err){
+        if(err) throw err;
+        res.json({success:!err});
+      });
     });
-  });  
+  } else {
+    res.render('login');
+  }  
 });
 
 var oa = new OAuth(
@@ -244,6 +312,7 @@ var oa = new OAuth(
 app.get('/:user_email/smugmug/auth', function(req, res){
   User.find({email: req.params.user_email}, function(err, docs){
     if(docs.length < 1) {
+      req.session.logged_in = true;
       req.session.user_email = req.params.user_email;
       var user = new User({email: req.params.user_email});
       user.save(function(err){
@@ -302,6 +371,8 @@ app.get('/smugmug/auth/callback', function(req, res){
         );     
       }
     });
+  } else {
+    res.render('login');
   }
 });
 app.get('/smugmug/images/:id/:key', function(req, res){
@@ -342,6 +413,18 @@ app.get('/smugmug/images/:id/:key', function(req, res){
       }
     }
   );
+});
+
+app.get('/new_images', function(req, res){
+  res.render('new_images');
+});
+
+app.get('/checkout', function(req, res){
+  res.render('checkout');
+});
+
+app.get('/select_tweecs', function(req, res){
+  res.render('select_tweecs');
 });
 
 function download_image(file_url, email) {
@@ -398,6 +481,23 @@ function download_from_s3(file_name, email) {
       console.log(chunk);
     });
   }).end();
+}
+
+function generate_instructions(image, email){
+  var content = ''+image.name+'\n\n';
+  for(var i = 0; i < image.adjustments.length; i++){
+    console.log(image.adjustments[i].english_name);
+    var adjustment = image.adjustments[i];
+    var chinese_instruction = adjustment.chinese_name;
+    var english_instruction = adjustment.english_name;
+    content = content.concat(chinese_instruction + ' - ');
+    content = content.concat(english_instruction + '\n');
+  }
+  console.log(content);
+  fs.writeFile('public/images/downloads/'+email+'/todo/'+image.name+'-instructions.txt', content, function(err){
+    if(err) throw err;
+    console.log(image.name + '-instructions.txt saved to disk');
+  }); 
 }
 
 http.createServer(app).listen(app.get('port'), function(){

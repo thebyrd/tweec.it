@@ -4,7 +4,7 @@
     <title>Tweec.it</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
-    <script type="text/javascript" src="/javascripts/ender.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="/javascripts/superagent.min.js"></script>
   
   <script>
@@ -245,7 +245,7 @@
                 <a href="">Select Tweecs</a>
               </li>
               <li>
-                <a href="">Submit Photos</a>
+                <a style="color:#333;" href="">Submit Photos</a>
               </li>
             </ul>
           </div>
@@ -274,25 +274,139 @@
 
         <div class="span10">
           <div class="middle">
-            <!-- we have to make this position absolut, but change where it is at different points in the application -->
-            <div class="app-tip">
+            <div class="app-tip" style="margin-left: 678px;">
               <p>This will tell you what to do next right below the control flow item you're on. </p>
             </div>
             <div class="well">
-              <div class="login-box">
-                <h2>Welcome to Tweec.it!</h2>
-                <p>Login, select photos you want to be enhanced, give us your email, and get your photos the next day!</p>
-                <div class="btn-group">
-                  <button class="btn" style="width:275px;">Login with Smugmug</button>
-                  <a class="btn dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                  </a>
-                  <ul style="width:298px;" class="dropdown-menu">
-                    <li><a href="">Smugmug &#x2714;</a></li>
-                    <li><a href="">Facebook</a></li>
-                    <li><a href="">Flickr</a></li>
-                  </ul>
+              <div class="checkout-box">
+                <div class="row">
+                  <div class="item-headers">
+                    <div class="span2">
+                      <h3>Image</h3>
+                    </div>
+                    <div class="span2">
+                      <h3>Tweecs</h3>
+                    </div>
+                    <div class="span2">
+                      <h3>Price</h3>
+                    </div>
+                    <div class="span2">
+                      <h3>Controls</h3>
+                    </div>
+                  </div>
                 </div>
+              </div>
+              <div class="checkout-box">
+                <div class="row">
+                  <div class="line-item">
+                    <div class="span2">
+                      <div class="thumbnail">
+                        <a href="#">
+                          <img src="http://placehold.it/150x100" />
+                        </a>
+                      </div>
+                    </div>
+                    <div class="span2">
+                      <div class="tweecs-summary">
+                        <ul>
+                          <li>Whiten Teeth</li>
+                          <li>Remove Red Eye</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="span2">
+                      <div class="price">
+                        <p>$3</p>
+                      </div>
+                    </div>
+                    <div class="span2">
+                      <div class="controls">
+                        <a>Edit</a> |
+                        <a>Remove</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="line-item">
+                    <div class="span2">
+                      <div class="thumbnail">
+                        <a href="#">
+                          <img src="http://placehold.it/150x100" />
+                        </a>
+                      </div>
+                    </div>
+                    <div class="span2">
+                      <div class="tweecs-summary">
+                        <ul>
+                          <li>Whiten Teeth</li>
+                          <li>Remove Red Eye</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="span2">
+                      <div class="price">
+                        <p>$3</p>
+                      </div>
+                    </div>
+                    <div class="span2">
+                      <div class="controls">
+                        <a>Edit</a> |
+                        <a>Remove</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="line-item">
+                    <div class="span2">
+                      <div class="thumbnail">
+                        <a href="#">
+                          <img src="http://placehold.it/150x100" />
+                        </a>
+                      </div>
+                    </div>
+                    <div class="span2">
+                      <div class="tweecs-summary">
+                        <ul>
+                          <li>Whiten Teeth</li>
+                          <li>Remove Red Eye</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="span2">
+                      <div class="price">
+                        <p>$3</p>
+                      </div>
+                    </div>
+                    <div class="span2">
+                      <div class="controls">
+                        <a>Edit</a> |
+                        <a>Remove</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="span4">
+                <h2>Payment information</h2>
+                <form action="" method="POST" id="payment-form">
+                <div class="form-row">
+                  <label>Card Number</label>
+                  <input type="text" size="20" autocomplete="off" class="card-number"/>
+                </div>
+                <div class="form-row">
+                  <label>CVC</label>
+                  <input type="text" size="4" autocomplete="off" class="card-cvc"/>
+                </div>
+                <div class="form-row">
+                  <label>Expiration (MM/YYYY)</label>
+                  <input style="width:48px;" type="text" size="2" class="card-expiry-month"/>
+                  <span> / </span>
+                  <input style="width:140px;" type="text" size="4" class="card-expiry-year"/>
+                </div>
+                <button type="submit" class="submit-button btn btn-success">Submit Payment</button>
+              </form>
+              </div>
+              <div class="span5">
+                <h4 style="margin-top: 70px;">Payments Policy</h4>
+                <p>If your order is not filled within 72 hours you will be reimbursed. If you are disatisfied with the quality of retouching you are eligible for reimbursement. If you have any problems please email us at support@tweec.it. </p>
               </div>
             </div>
           </div>

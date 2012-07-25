@@ -239,7 +239,7 @@
                 <a href=""><img src="/images/logo.png" alt="" /></a>
               </li>
               <li>
-                <a href="">Login</a>
+                <a style="color:#333;" href="">Login</a>
               </li>
               <li>
                 <a href="">Select Tweecs</a>
@@ -282,17 +282,17 @@
               <div class="login-box">
                 <h2>Welcome to Tweec.it!</h2>
                 <p>Login, select photos you want to be enhanced, give us your email, and get your photos the next day!</p>
-                <div class="btn-group">
-                  <button class="btn" style="width:275px;">Login with Smugmug</button>
-                  <a class="btn dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                  </a>
-                  <ul style="width:298px;" class="dropdown-menu">
-                    <li><a href="">Smugmug &#x2714;</a></li>
-                    <li><a href="">Facebook</a></li>
-                    <li><a href="">Flickr</a></li>
-                  </ul>
-                </div>
+                <input id="email" type="text" style="width:275px;" placeholder="Enter Email" />
+                <script>
+                  function login(){
+                    if($.v.trim($('input#email').val()) == "") {
+                      alert("An email address is required so that we know where to send the enhanced images.")
+                    } else {
+                      window.location = '/'+$.v.trim($('input#email').val())+'/smugmug/auth';
+                    }
+                  }
+                </script>
+                <a class="btn" style="width:260px;" onClick="login()">Login with Smugmug</a>
               </div>
             </div>
           </div>
