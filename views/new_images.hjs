@@ -276,7 +276,7 @@
           <div class="middle">
             <!-- we have to make this position absolut, but change where it is at different points in the application -->
             <div style="margin-left: 334px;" class="app-tip">
-              <p>This will tell you what to do next right below the control flow item you're on. </p>
+              <p>Click on the images that you would like to tweec and select adjustments. When finished click checkout at the bottom of the page. </p>
             </div>
             <div class="well">
               <div class="images">
