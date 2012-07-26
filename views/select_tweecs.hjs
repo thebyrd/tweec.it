@@ -298,15 +298,15 @@
                           <div class="controls">
                             <label class="checkbox">
                               <input type="checkbox" name="optionsCheckboxList1" value="option1">
-                              Remove Red-Eye ($0.5)
+                              Remove Red-Eye ($0.50)
                             </label>
                             <label class="checkbox">
                               <input type="checkbox" name="optionsCheckboxList2" value="option2">
-                              Something Else ($1.5)
+                              Whiten Eyes ($2.50)
                             </label>
                             <label class="checkbox">
                               <input type="checkbox" name="optionsCheckboxList3" value="option3">
-                              That Other one ($2.25)
+                              Eyebag Softening ($2.50)
                             </label>
                           </div>
                         </div>
@@ -317,15 +317,15 @@
                           <div class="controls">
                             <label class="checkbox">
                               <input type="checkbox" name="optionsCheckboxList1" value="option1">
-                              Whiten Teeth ($0.75)
+                              Whiten Teeth ($2.50)
                             </label>
                             <label class="checkbox">
                               <input type="checkbox" name="optionsCheckboxList2" value="option2">
-                              Fill in missing Teeth ($1.5)
+                              Fill in missing Tooth ($2.5)
                             </label>
                             <label class="checkbox">
                               <input type="checkbox" name="optionsCheckboxList3" value="option3">
-                              Something fancy ($3.00)
+                              Remove Braces ($5.00)
                             </label>
                           </div>
                         </div>  
@@ -335,38 +335,38 @@
                     <div class="row">
                       <div class="span2">
                         <div class="control-group">
-                          <label class="control-label" for="optionsCheckboxList">Eyes</label>
+                          <label class="control-label" for="optionsCheckboxList">Skin</label>
                           <div class="controls">
                             <label class="checkbox">
                               <input type="checkbox" name="optionsCheckboxList1" value="option1">
-                              Remove Red-Eye ($0.5)
+                              Remove Acne ($2.50)
                             </label>
                             <label class="checkbox">
                               <input type="checkbox" name="optionsCheckboxList2" value="option2">
-                              Something Else ($1.5)
+                              Remove Scar ($0.50)
                             </label>
                             <label class="checkbox">
                               <input type="checkbox" name="optionsCheckboxList3" value="option3">
-                              That Other one ($2.25)
+                              Skin smoothing ($2.50)
                             </label>
                           </div>
                         </div>
                       </div>
                       <div class="span2">
                         <div class="control-group">
-                          <label class="control-label" for="optionsCheckboxList">Teeth</label>
+                          <label class="control-label" for="optionsCheckboxList">Misc.</label>
                           <div class="controls">
                             <label class="checkbox">
                               <input type="checkbox" name="optionsCheckboxList1" value="option1">
-                              Whiten Teeth ($0.75)
+                              Dust Removal ($0.50)
                             </label>
                             <label class="checkbox">
                               <input type="checkbox" name="optionsCheckboxList2" value="option2">
-                              Fill in missing Teeth ($1.5)
+                              Background Change ($5.00)
                             </label>
                             <label class="checkbox">
                               <input type="checkbox" name="optionsCheckboxList3" value="option3">
-                              Something fancy ($3.00)
+                              Clothing Wrinkle Removal ($5.00)
                             </label>
                           </div>
                         </div>  

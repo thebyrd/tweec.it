@@ -443,6 +443,7 @@
     function bind_events(){
         $('.thumbnail a img').removeListener('click');
         $('.thumbnail a img').click(function(){
+            $('.options').attr('img-url', $(this).attr('src'));
             $('.images').css('display', 'none');
             $('.select-tweecs').css('display', 'block');
             $('img#main-image').attr('src', $(this).attr('src'));
@@ -481,6 +482,17 @@
                   }
                 });
         {{/albums}}
+        /* Assuming that the .checkbox input[name] is the photo_name-tweec_slug */
+        var tweecs = [];
+        $('.checkbox input').click(function(){
+          var slug = $(this).attr('name');
+          if(tweecs.indexOf(slug) == -1){
+            tweecs.push(slug);
+          } else {
+            tweecs.splice(tweecs.indexOf(slug), 1);
+          }
+        });
+
       });
       
 
