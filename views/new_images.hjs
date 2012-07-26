@@ -486,7 +486,7 @@
         var tweecs = {};
         $('.checkbox input').click(function(){
           var slug = $(this).attr('tweec-slug');
-          var image_url = $('options').attr('img-url');
+          var image_url = $('.options').attr('img-url');
 
           if(!tweecs[image_url]){//if image hasn't been added
             tweecs[image_url] = [];//add the image
