@@ -457,7 +457,8 @@
                 });
 
         {{/albums}}
-        setTimeout(bind_events(), 7000);
+        setTimeout(console.log("good to go"), 3000);
+        setTimeout(bind_events(), 3000);
       });
       function bind_events(){
         $('.thumbnail').click(function(){
