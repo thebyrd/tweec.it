@@ -448,7 +448,7 @@
             $('img#main-image').attr('src', $(this).attr('src'));
             $('a.btn.btn-large.btn-danger.span3').text('← Back to Images');
             $('a.btn.btn-large.btn-danger.span3').attr('href', '#');
-            $('a.btn.btn-large.span3.btn-success').addClass('back-to-images');
+            $('a.btn.btn-large.span3.btn-danger').addClass('back-to-images');
         });
         $('.back-to-images').click(function(){
             $('.select-tweecs').css('display', 'none');
