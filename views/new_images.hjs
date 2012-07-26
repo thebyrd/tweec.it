@@ -449,17 +449,16 @@
             $('a.btn.btn-large.btn-danger.span3').text('← Back to Images');
             $('a.btn.btn-large.btn-danger.span3').attr('href', '#');
             $('a.btn.btn-large.span3.btn-danger').addClass('back-to-images');
+            $('.back-to-images').click(function(){
+              $('.select-tweecs').css('display', 'none');
+              $('.images').css('display', 'block');
+
+              $('a.btn.btn-large.btn-success.span3.back-to-images').text("Checkout →");
+              $('a.btn.btn-large.btn-success.span3.back-to-images').attr('href', '/checkout');
+              $('a.btn.btn-large.btn-success.span3.back-to-images').removeClass('back-to-images');
+            });
         });
-        $('.back-to-images').click(function(){
-            $('.select-tweecs').css('display', 'none');
-            $('.images').css('display', 'block');
-
-            $('a.btn.btn-large.btn-success.span3.back-to-images').text("Checkout →");
-            $('a.btn.btn-large.btn-success.span3.back-to-images').attr('href', '/checkout');
-            $('a.btn.btn-large.btn-success.span3.back-to-images').removeClass('back-to-images');
-
-
-        });
+        
       }
     //load images from albums
       $.domReady(function(){
