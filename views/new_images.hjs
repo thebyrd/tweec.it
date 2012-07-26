@@ -229,7 +229,7 @@
     }
   </script>
   </head>
-  <body user-email="{{ email }}">
+  <body user-email="${{ email }}">
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -490,17 +490,8 @@
 
           if(!tweecs[image_url]){//if image hasn't been added
             tweecs[image_url] = [];//add the image
-            
-
-
-
-
-            createImage('');
-
-
-
-
-
+            var uri = image_url.split('/');
+            createImage($('body').attr('user-email'),uri.pop(), uri.join('/'));
           } else if(tweecs[image_url].indexOf(slug) == -1){//if image doesn't have adjustment
             tweecs[image_url].push(slug);//add it
           } else {//if image already has the adjustment
