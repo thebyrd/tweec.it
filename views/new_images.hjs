@@ -229,7 +229,7 @@
     }
   </script>
   </head>
-  <body>
+  <body user-email="{{ email }}">
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -483,14 +483,30 @@
                 });
         {{/albums}}
         /* Assuming that the .checkbox input[name] is the photo_name-tweec_slug */
-        var tweecs = [];
+        var tweecs = {};
         $('.checkbox input').click(function(){
-          var slug = $(this).attr('name');
-          if(tweecs.indexOf(slug) == -1){
-            tweecs.push(slug);
-          } else {
-            tweecs.splice(tweecs.indexOf(slug), 1);
+          var slug = $(this).attr('tweec-slug');
+          var image_url = $('options').attr('img-url');
+
+          if(!tweecs[image_url]){//if image hasn't been added
+            tweecs[image_url] = [];//add the image
+            
+
+
+
+
+            createImage('');
+
+
+
+
+
+          } else if(tweecs[image_url].indexOf(slug) == -1){//if image doesn't have adjustment
+            tweecs[image_url].push(slug);//add it
+          } else {//if image already has the adjustment
+            tweecs[iamge_url].splice(tweecs.indexOf(slug), 1);//remove it
           }
+
         });
 
       });

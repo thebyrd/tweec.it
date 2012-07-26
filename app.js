@@ -366,7 +366,7 @@ app.get('/smugmug/auth/callback', function(req, res){
                   title: data.Albums[i].Title
                 });
               }
-              res.render('new_images', {albums: albums});
+              res.render('new_images', { albums: albums, email: req.session.user_email });
               //render a template with the albums
               //then have the template make a call async for the images in album
             }
