@@ -453,8 +453,8 @@
               $('.select-tweecs').css('display', 'none');
               $('.images').css('display', 'block');
               $('a.btn.btn-large.btn-danger.span3.back-to-images').text("Checkout →");
-              $('a.btn.btn-large.btn-danger.span3.back-to-images').attr('href', '/checkout');
               $('a.btn.btn-large.btn-danger.span3.back-to-images').removeClass('back-to-images');
+              $('a.btn.btn-large.btn-danger.span3').attr('href', '/checkout');
             });
         });
         
