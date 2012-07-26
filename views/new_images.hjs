@@ -441,5 +441,23 @@
         </div>
       </div>
     </div>
+    <script>
+      $.domReady(function(){
+        {{#albums}}
+          request.get('/smugmug/images/{{id}}/{{key}}')
+                .end(function(res){
+                  if(res.ok){
+                    $.each(res.body, function(url){
+                      $('.thumbnails').append('<div class=" span2 thumbnail"><a href="#"><img src="'+url+'" /></a></div>');
+                    });
+                  } else {
+                    console.log('request failed: ' + res.text);
+                  }
+                });
+
+        {{/albums}}
+      });
+
+    </script>
   </body>
 </html>

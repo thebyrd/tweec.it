@@ -32,12 +32,16 @@ app.configure(function(){
   app.use(require('stylus').middleware(__dirname + '/public'));
   app.use(express.static(__dirname + '/public'));
   app.enable('jsonp callback');
-  mongoose.connect('mongodb://localhost:27017/tweec-it');
 });
 
 app.configure('development', function(){
   app.use(express.errorHandler());
+  mongoose.connect('mongodb://localhost:27017/tweec-it');
 });
+
+app.configure('production', function(){
+  mongoose.connect('mongodb://david:bellarmine@flame.mongohq.com:27048/tweec-beta');
+})
 
 //Models
 var Schema = mongoose.Schema, ObjectId = Schema.ObjectId;
@@ -362,7 +366,7 @@ app.get('/smugmug/auth/callback', function(req, res){
                   title: data.Albums[i].Title
                 });
               }
-              res.render('images', {albums: albums});
+              res.render('new_images', {albums: albums});
               //render a template with the albums
               //then have the template make a call async for the images in album
             }
