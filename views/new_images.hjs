@@ -440,6 +440,7 @@
       </div>
     </div>
     <script>
+    //load images from albums
       $.domReady(function(){
         $('p.error-message').remove();
         {{#albums}}
@@ -455,14 +456,26 @@
                 });
 
         {{/albums}}
-
-        $('.thumbnail').click(function(){
+      });
+      //swap image with tweec selection
+      $('.thumbnail').click(function(){
           $('.images').css('display', 'none');
           $('.select-tweecs').css('display', 'block')
           $('#main-image img').attr('src', $(this).attr('img src'));
-        });
-      
+          $('a.btn.btn-large.btn-danger.span3').text('&larr; Back to Images');
+          $('a.btn.btn-large.btn-danger.span3').attr('src', '#');
+          $('a.btn.btn-large.btn-danger.span3').removeClass('btn-danger');
+          $('a.btn.btn-large.span3').addClass('btn-success');
+          $('a.btn.btn-large.span3.btn-success').addClass('back-to-images');
       });
+
+      $('.back-to-images').click(function(){
+          $('a.btn.btn-large.btn-success.span3').text("Checkout &rarr;");
+          $('a.btn.btn-large.btn-success.span3').attr('src', '/checkout');
+          $('a.btn.btn-large.btn-success.span3').removeClass('btn-success');
+          $('a.btn.btn-large.span3').addClass('btn-danger');
+      });
+
 
     </script>
   </body>
