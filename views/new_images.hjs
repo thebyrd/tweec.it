@@ -440,28 +440,9 @@
       </div>
     </div>
     <script>
-    //load images from albums
-      $.domReady(function(){
-        //swap image with tweec selection
-        $('p.error-message').remove();
-        {{#albums}}
-          request.get('/smugmug/images/{{id}}/{{key}}')
-                .end(function(res){
-                  if(res.ok){
-                    $.each(res.body, function(url){
-                      $('.thumbnails').append('<div class=" span2 thumbnail"><a href="#"><img src="'+url+'" /></a></div>');
-                    });
-                  } else {
-                    console.log('request failed: ' + res.text);
-                  }
-                });
-
-        {{/albums}}
-        setTimeout(console.log("good to go"), 3000);
-        setTimeout(bind_events(), 3000);
-      });
-      function bind_events(){
-        $('.thumbnail').click(function(){
+    function bind_events(){
+        $('.thumbnail a').removeListener('click');
+        $('.thumbnail a').click(function(){
             $('.images').css('display', 'none');
             $('.select-tweecs').css('display', 'block');
             $('img#main-image').attr('src', $(this).attr('img src'));
@@ -482,6 +463,25 @@
             $('a.btn.btn-large.span3').addClass('btn-danger');
         });
       }
+    //load images from albums
+      $.domReady(function(){
+        //swap image with tweec selection
+        $('p.error-message').remove();
+        {{#albums}}
+          request.get('/smugmug/images/{{id}}/{{key}}')
+                .end(function(res){
+                  if(res.ok){
+                    $.each(res.body, function(url){
+                      $('.thumbnails').append('<div class=" span2 thumbnail"><a href="#"><img src="'+url+'" /></a></div>');
+                      bind_events();
+                    });
+                  } else {
+                    console.log('request failed: ' + res.text);
+                  }
+                });
+        {{/albums}}
+      });
+      
 
 
     </script>
