@@ -74,30 +74,30 @@ var User = mongoose.model('User', UserSchema);
 
 //Controllers
 app.get('/populate-db', function(req, res){
-  // var fail_on_error = function(err){if(err) throw err;}
+  var fail_on_error = function(err){if(err) throw err;}
 
-  // var david = new User();
-  // david.name = "David Byrd";
-  // david.email = "david@byrdhou.se"
-  // david.images.push({
-  //   name: 'davidProfilePicture.jpg'
-  // , path: 'http://byrdhou.se/'
-  // , adjustments: {
-  //     english_name:'Teeth Whitening' 
-  //   , chinese_name:'美白牙齿'
-  //   , english_description:'we\'ll adjust the shade of the teeth in the picture to look naturally white.'
-  //   , price:'1.75'
-  // }
-  // });
-  // david.save(fail_on_error);
-
-  User.findOne({email: 'david@byrdhou.se'}, function(err, doc){
-    if(err) throw err;
-    var user = doc;
-    for(var i = 0; i < user.images.length; i++){
-      generate_instructions(user.images[i], 'david@byrdhou.se');  
-    }
+  var david = new User();
+  david.name = "TJ Rak";
+  david.email = "tj@tweec.it"
+  david.images.push({
+    name: 'davidProfilePicture.jpg'
+  , path: 'http://byrdhou.se/'
+  , adjustments: {
+      english_name:'Teeth Whitening' 
+    , chinese_name:'美白牙齿'
+    , english_description:'we\'ll adjust the shade of the teeth in the picture to look naturally white.'
+    , price:'1.75'
+  }
   });
+  david.save(fail_on_error);
+
+  // User.findOne({email: 'david@byrdhou.se'}, function(err, doc){
+  //   if(err) throw err;
+  //   var user = doc;
+  //   for(var i = 0; i < user.images.length; i++){
+  //     generate_instructions(user.images[i], 'david@byrdhou.se');  
+  //   }
+  // });
   res.json({success:true});
 });
 app.get('/', function(req, res){
