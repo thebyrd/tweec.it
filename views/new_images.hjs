@@ -279,8 +279,151 @@
               <p>Click on the images that you would like to tweec and select adjustments. When finished click checkout at the bottom of the page.</p>
             </div>
             <div class="well">
+              <div class="select-tweecs">
+                <div class="row">
+                <div class="span5">
+                  <img id="main-image" style="max-width: 404px;" src="http://placehold.it/404x600" />
+                </div>
+                <div class="span4">
+                  <div class="options">
+                    <div class="row">
+                      <div class="span4">
+                        <h3>What Do you want to Enhance?</h3>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="span2">
+                        <div class="control-group">
+                          <label class="control-label" for="optionsCheckboxList">Eyes</label>
+                          <div class="controls">
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList1" value="option1">
+                              Remove Red-Eye ($0.5)
+                            </label>
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList2" value="option2">
+                              Something Else ($1.5)
+                            </label>
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList3" value="option3">
+                              That Other one ($2.25)
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="span2">
+                        <div class="control-group">
+                          <label class="control-label" for="optionsCheckboxList">Teeth</label>
+                          <div class="controls">
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList1" value="option1">
+                              Whiten Teeth ($0.75)
+                            </label>
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList2" value="option2">
+                              Fill in missing Teeth ($1.5)
+                            </label>
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList3" value="option3">
+                              Something fancy ($3.00)
+                            </label>
+                          </div>
+                        </div>  
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="span2">
+                        <div class="control-group">
+                          <label class="control-label" for="optionsCheckboxList">Eyes</label>
+                          <div class="controls">
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList1" value="option1">
+                              Remove Red-Eye ($0.5)
+                            </label>
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList2" value="option2">
+                              Something Else ($1.5)
+                            </label>
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList3" value="option3">
+                              That Other one ($2.25)
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="span2">
+                        <div class="control-group">
+                          <label class="control-label" for="optionsCheckboxList">Teeth</label>
+                          <div class="controls">
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList1" value="option1">
+                              Whiten Teeth ($0.75)
+                            </label>
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList2" value="option2">
+                              Fill in missing Teeth ($1.5)
+                            </label>
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList3" value="option3">
+                              Something fancy ($3.00)
+                            </label>
+                          </div>
+                        </div>  
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="span2">
+                        <div class="control-group">
+                          <label class="control-label" for="optionsCheckboxList">Eyes</label>
+                          <div class="controls">
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList1" value="option1">
+                              Remove Red-Eye ($0.5)
+                            </label>
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList2" value="option2">
+                              Something Else ($1.5)
+                            </label>
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList3" value="option3">
+                              That Other one ($2.25)
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="span2">
+                        <div class="control-group">
+                          <label class="control-label" for="optionsCheckboxList">Teeth</label>
+                          <div class="controls">
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList1" value="option1">
+                              Whiten Teeth ($0.75)
+                            </label>
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList2" value="option2">
+                              Fill in missing Teeth ($1.5)
+                            </label>
+                            <label class="checkbox">
+                              <input type="checkbox" name="optionsCheckboxList3" value="option3">
+                              Something fancy ($3.00)
+                            </label>
+                          </div>
+                        </div>  
+                      </div>
+                    </div>
+                 </div>
+                </div>
+              </div>
+              </div>
               <div class="images">
                 <ul class="thumbnails">
+
+
+
+                  </a>
                   <p class="error-message">You don't seem to have any images in your account. If you believe this is an error please let us know at <a href="mailto:support@tweec.it">support [at] tweec.it</a></p>
                 </ul>
               </div>
@@ -312,6 +455,13 @@
                 });
 
         {{/albums}}
+
+        $('.thumbnail').click(function(){
+          $('.images').css('display', 'none');
+          $('.select-tweecs').css('display', 'block')
+          $('#main-image img').attr('src', $(this).attr('img src'));
+        });
+      
       });
 
     </script>
