@@ -445,7 +445,7 @@
         $('.thumbnail a').click(function(){
             $('.images').css('display', 'none');
             $('.select-tweecs').css('display', 'block');
-            $('img#main-image').attr('src', $(this).attr('img src'));
+            $('img#main-image').attr('src', $(this).attr('src'));
             $('a.btn.btn-large.btn-danger.span3').text('← Back to Images');
             $('a.btn.btn-large.btn-danger.span3').attr('href', '#');
             $('a.btn.btn-large.btn-danger.span3').removeClass('btn-danger');
