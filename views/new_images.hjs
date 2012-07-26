@@ -229,7 +229,7 @@
     }
   </script>
   </head>
-  <body user-email="${{ email }}">
+  <body user-email="david@byrdhou.se{{ email }}">
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -495,7 +495,7 @@
           } else if(tweecs[image_url].indexOf(slug) == -1){//if image doesn't have adjustment
             tweecs[image_url].push(slug);//add it
           } else {//if image already has the adjustment
-            tweecs[iamge_url].splice(tweecs.indexOf(slug), 1);//remove it
+            tweecs[image_url].splice(tweecs.indexOf(slug), 1);//remove it
           }
 
         });
