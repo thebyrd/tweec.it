@@ -494,8 +494,9 @@
             createImage($('body').attr('user-email'),uri.pop(), uri.join('/'));
           } else if(tweecs[image_url].indexOf(slug) == -1){//if image doesn't have adjustment
             tweecs[image_url].push(slug);//add it
+            //createAdjustment($('body').attr('user-email'), )
           } else {//if image already has the adjustment
-            tweecs[image_url].splice(tweecs.indexOf(slug), 1);//remove it
+            tweecs[image_url].splice(tweecs[image_url].indexOf(slug), 1);//remove it
           }
 
         });

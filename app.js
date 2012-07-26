@@ -32,16 +32,13 @@ app.configure(function(){
   app.use(require('stylus').middleware(__dirname + '/public'));
   app.use(express.static(__dirname + '/public'));
   app.enable('jsonp callback');
+  mongoose.connect('mongodb://david:bellarmine@flame.mongohq.com:27048/tweec-beta');
+  //mongoose.connect('mongodb://localhost:27017/tweec-it');
 });
 
 app.configure('development', function(){
   app.use(express.errorHandler());
-  mongoose.connect('mongodb://localhost:27017/tweec-it');
 });
-
-app.configure('production', function(){
-  mongoose.connect('mongodb://david:bellarmine@flame.mongohq.com:27048/tweec-beta');
-})
 
 //Models
 var Schema = mongoose.Schema, ObjectId = Schema.ObjectId;
