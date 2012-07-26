@@ -442,6 +442,7 @@
     <script>
     //load images from albums
       $.domReady(function(){
+        //swap image with tweec selection
         $('p.error-message').remove();
         {{#albums}}
           request.get('/smugmug/images/{{id}}/{{key}}')
@@ -456,25 +457,30 @@
                 });
 
         {{/albums}}
+        setTimeout(bind_events(), 7000);
       });
-      //swap image with tweec selection
-      $('.thumbnail').click(function(){
-          $('.images').css('display', 'none');
-          $('.select-tweecs').css('display', 'block')
-          $('#main-image img').attr('src', $(this).attr('img src'));
-          $('a.btn.btn-large.btn-danger.span3').text('&larr; Back to Images');
-          $('a.btn.btn-large.btn-danger.span3').attr('src', '#');
-          $('a.btn.btn-large.btn-danger.span3').removeClass('btn-danger');
-          $('a.btn.btn-large.span3').addClass('btn-success');
-          $('a.btn.btn-large.span3.btn-success').addClass('back-to-images');
-      });
+      function bind_events(){
+        $('.thumbnail').click(function(){
+            $('.images').css('display', 'none');
+            $('.select-tweecs').css('display', 'block');
+            $('img#main-image').attr('src', $(this).attr('img src'));
+            $('a.btn.btn-large.btn-danger.span3').text('← Back to Images');
+            $('a.btn.btn-large.btn-danger.span3').attr('href', '#');
+            $('a.btn.btn-large.btn-danger.span3').removeClass('btn-danger');
+            $('a.btn.btn-large.span3').addClass('btn-success');
+            $('a.btn.btn-large.span3.btn-success').addClass('back-to-images');
+        });
 
-      $('.back-to-images').click(function(){
-          $('a.btn.btn-large.btn-success.span3').text("Checkout &rarr;");
-          $('a.btn.btn-large.btn-success.span3').attr('src', '/checkout');
-          $('a.btn.btn-large.btn-success.span3').removeClass('btn-success');
-          $('a.btn.btn-large.span3').addClass('btn-danger');
-      });
+        $('.back-to-images').click(function(){
+            $('.select-tweecs').css('display', 'none');
+            $('.images').css('display', 'block');
+
+            $('a.btn.btn-large.btn-success.span3').text("Checkout →");
+            $('a.btn.btn-large.btn-success.span3').attr('href', '/checkout');
+            $('a.btn.btn-large.btn-success.span3').removeClass('btn-success');
+            $('a.btn.btn-large.span3').addClass('btn-danger');
+        });
+      }
 
 
     </script>
