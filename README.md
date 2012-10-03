@@ -8,6 +8,7 @@ backend todo
 * process a credit card with stripe
 * write a cron job that checks for images in "finished" directories, emails them to the correct user, & then marks them as sent in redis
 * switch over to Torero from Express
+
 frontend todo
 =============
 * use filepicker.io
